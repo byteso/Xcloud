@@ -1,4 +1,4 @@
-package cloudserver
+package main
 
 func main() {
 

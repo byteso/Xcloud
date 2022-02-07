@@ -21,4 +21,5 @@ func Router() {
 		auth.GET("/source/:path", source.SourceHandle)
 		auth.GET("/info/:path", userinfo.UserInfoHandle)
 	}
+	r.Run()
 }

@@ -51,6 +51,11 @@ func createToken(request login.RequestLogin) (string, error) {
 	return t.SignedString(signKey)
 }
 
+func VerifyInvitation(request login.RequestInvitation) (response login.ResponseInvitation, err error) {
+
+	return
+}
+
 func Sign(request login.RequestSign) (err error) {
 	return
 }

@@ -1,0 +1,11 @@
+database:
+  mongodb:
+    user:
+    password:
+
+    ip:
+    port:
+    databaseName:
+
+cloudServer:
+  loginCode:

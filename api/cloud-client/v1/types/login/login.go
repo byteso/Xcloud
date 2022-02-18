@@ -6,9 +6,18 @@ type RequestLogin struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type RequestInvitation struct {
+	InvitationCode string `json:"invitationCode" binding:"required"`
+}
+
+type ResponseInvitation struct {
+	Account string `json:"account" binding:"required"`
+}
+
 type RequestSign struct {
-	Account  string `json:"account" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	InvitationCode string `json:"invitationCode" binding:"required"`
+	Account        string `json:"account" binding:"required"`
+	Password       string `json:"password" binding:"required"`
 
 	Nick   string `json:"nick"`
 	Avatar string `json:"Avatar"`

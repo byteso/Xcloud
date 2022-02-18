@@ -10,13 +10,19 @@ import (
 
 //
 func LoginHandle(c *gin.Context) {
-	path := c.Param("path")
-	switch path {
+	p := c.Param("path")
+	switch p {
+	case "verifyInvitation":
+		verifyInvitation(c)
 	case "sign":
 		sign(c)
 	case "login":
 		login(c)
 	}
+}
+
+func verifyInvitation(c *gin.Context) {
+
 }
 
 func sign(c *gin.Context) {
@@ -35,7 +41,7 @@ func login(c *gin.Context) {
 		return
 	}
 
-	_, err := internalLogin.Login(request)
+	token, err := internalLogin.Login(request)
 	// internal server error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -48,6 +54,7 @@ func login(c *gin.Context) {
 	// ok
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
+		"data": token,
 		"msg":  http.StatusText(http.StatusOK),
 	})
 

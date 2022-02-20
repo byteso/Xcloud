@@ -8,7 +8,8 @@ import (
 )
 
 type Configs struct {
-	Data Database `yaml:"database"`
+	Data        Database    `yaml:"database"`
+	CloudServer CloudServer `yaml:"cloudServer"`
 }
 
 type Database struct {
@@ -23,10 +24,15 @@ type MongoDB struct {
 	DatabaseName string `yaml:"databaseName"`
 }
 
+type CloudServer struct {
+	Platform  string `yaml:"platform"`
+	LoginCode string `yaml:"loginCode"`
+}
+
 var Config *Configs
 
 func InitConfig() {
-	dir, err := filepath.Abs("../../configs/config.yaml")
+	dir, err := filepath.Abs("../../test/config.yaml")
 	if err != nil {
 		return
 	}

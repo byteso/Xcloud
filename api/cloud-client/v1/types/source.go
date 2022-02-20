@@ -1,4 +1,4 @@
-package source
+package types
 
 // request source
 type RequestSource struct {

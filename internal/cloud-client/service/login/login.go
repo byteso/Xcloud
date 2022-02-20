@@ -1,18 +1,12 @@
 package login
 
 import (
-	"crypto/rand"
-	"crypto/rsa"
 	"fmt"
 	"log"
-	"time"
 
-	"github.com/byteso/Xcloud/api/cloud-client/v1/types/login"
-	"github.com/golang-jwt/jwt"
-)
-
-var (
-//signKey *rsa.PrivateKey
+	"github.com/byteso/Xcloud/api/cloud-client/v1/types"
+	"github.com/byteso/Xcloud/internal/auth"
+	"github.com/byteso/Xcloud/internal/repository"
 )
 
 func fatal(err error) {
@@ -21,41 +15,26 @@ func fatal(err error) {
 	}
 }
 
-type CustomClaimsExample struct {
-	*jwt.StandardClaims
-	tokenType string
-	login.RequestLogin
-}
-
-func Login(request login.RequestLogin) (response login.ResponseLogin, err error) {
-	response.Token, err = createToken(request)
+func Login(request types.RequestLogin) (response types.ResponseLogin, err error) {
+	response.Token, err = auth.CreateToken(request, "client")
 	fatal(err)
 	fmt.Println(response.Token)
 	return
 }
 
-func createToken(request login.RequestLogin) (string, error) {
-	t := jwt.New(jwt.GetSigningMethod("RS256"))
-	t.Claims = &CustomClaimsExample{
-		&jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute * 1).Unix(),
-		},
-		"level1",
-		request,
-	}
-	signKey, err := rsa.GenerateKey(rand.Reader, 2048)
-	fmt.Println(signKey.PublicKey)
+func VerifyInvitation(request types.RequestInvitation) (response types.ResponseInvitation, err error) {
+	var i repository.Invitation
+
+	i.InvitationCode = request.InvitationCode
+
+	result, err := i.FindOne()
 	if err != nil {
-		panic(err)
+		return response, err
 	}
-	return t.SignedString(signKey)
-}
-
-func VerifyInvitation(request login.RequestInvitation) (response login.ResponseInvitation, err error) {
-
+	response.Account = result.Account
 	return
 }
 
-func Sign(request login.RequestSign) (err error) {
+func Sign(request types.RequestSign) (err error) {
 	return
 }

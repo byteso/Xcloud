@@ -1,4 +1,4 @@
-package userinfo
+package api
 
 import "github.com/gin-gonic/gin"
 
@@ -12,7 +12,7 @@ func UserInfoHandle(c *gin.Context) {
 	}
 }
 
-func Get(c *gin.Context) {
+func GetInfo(c *gin.Context) {
 
 }
 

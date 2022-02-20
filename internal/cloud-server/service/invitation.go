@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/byteso/Xcloud/api/cloud-server/v1/types"
-	"github.com/byteso/Xcloud/internal/cloud-server/repository"
+	"github.com/byteso/Xcloud/internal/repository"
 )
 
 func AddInvitation(r types.RequestInvitation) error {

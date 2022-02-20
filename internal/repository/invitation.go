@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/byteso/Xcloud/internal/cloud-server/entity"
 	"github.com/byteso/Xcloud/internal/database"
+	"github.com/byteso/Xcloud/internal/entity"
 )
 
 type Invitation entity.Invitation
@@ -23,4 +23,17 @@ func (i *Invitation) Insert() error {
 	}
 	fmt.Println(result)
 	return nil
+}
+
+// find one
+func (i *Invitation) FindOne() (Invitation, error) {
+	var result Invitation
+	coll := database.Client.Database("XcloudTest").Collection("invitation")
+
+	err := coll.FindOne(context.TODO(), i).Decode(&result)
+	if err != nil {
+		return Invitation{}, err
+	}
+
+	return result, nil
 }

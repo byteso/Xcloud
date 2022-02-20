@@ -1,4 +1,4 @@
-package userinftype
+package types
 
 // request user info
 type RequestGet struct {

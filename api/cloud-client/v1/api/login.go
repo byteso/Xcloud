@@ -1,9 +1,9 @@
-package login
+package api
 
 import (
 	"net/http"
 
-	typeLogin "github.com/byteso/Xcloud/api/cloud-client/v1/types/login"
+	"github.com/byteso/Xcloud/api/cloud-client/v1/types"
 	internalLogin "github.com/byteso/Xcloud/internal/cloud-client/service/login"
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +22,15 @@ func LoginHandle(c *gin.Context) {
 }
 
 func verifyInvitation(c *gin.Context) {
+	var request types.RequestInvitation
+
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  http.StatusText(http.StatusBadRequest),
+		})
+		return
+	}
 
 }
 
@@ -30,7 +39,7 @@ func sign(c *gin.Context) {
 }
 
 func login(c *gin.Context) {
-	var request typeLogin.RequestLogin
+	var request types.RequestLogin
 
 	// bad resquest
 	if c.BindJSON(&request) != nil {

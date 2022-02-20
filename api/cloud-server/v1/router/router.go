@@ -9,17 +9,13 @@ import (
 func Router() {
 	r := gin.Default()
 
-	test := r.Group("v1/test")
-	{
-		test.POST("/:path", api.InvitationHandle)
-	}
-
-	v1 := r.Group("/V1")
+	v1 := r.Group("/v1")
 	{
 		v1.POST("/:path", api.InvitationHandle)
+		v1.GET("/:path", api.ConnectGetHandle)
 	}
 
-	auth := r.Group("/v1", middleware.AuthJwt())
+	auth := r.Group("/v1/auth", middleware.AuthJwt())
 	{
 		auth.POST("/:path", api.InvitationHandle)
 	}

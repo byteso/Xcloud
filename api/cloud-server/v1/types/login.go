@@ -1,6 +1,9 @@
 package types
 
 type RequestLogin struct {
-	Account  string `json:"account"`
-	Password string `json:"password"`
+	LoginCode string `json:"loginCode" binding:"required"`
+}
+
+type ResponseLogin struct {
+	Token string `json:"token"`
 }

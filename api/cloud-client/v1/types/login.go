@@ -1,4 +1,4 @@
-package login
+package types
 
 // request struct
 type RequestLogin struct {

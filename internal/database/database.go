@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/byteso/Xcloud/configs"
+	"github.com/byteso/Xcloud/internal/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -22,7 +22,7 @@ func InitEngine() {
 }
 
 func initDatabase() *mongo.Client {
-	c := configs.Config
+	c := config.Config
 
 	mongoUrl := fmt.Sprintf("mongodb://%v:%v@%v:%v/%v", c.Data.Mongo.User, c.Data.Mongo.Password, c.Data.Mongo.Ip, c.Data.Mongo.Port, c.Data.Mongo.DatabaseName)
 

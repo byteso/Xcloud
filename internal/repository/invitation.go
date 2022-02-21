@@ -12,10 +12,7 @@ type Invitation entity.Invitation
 
 // insert
 func (i *Invitation) Insert() error {
-	fmt.Println(i.Account)
-	fmt.Println(i.InvitationCode)
-	fmt.Println(database.Client)
-	coll := database.Client.Database("XcloudTest").Collection("invitation")
+	coll := database.Database.Collection("invitation")
 
 	result, err := coll.InsertOne(context.TODO(), i)
 	if err != nil {
@@ -28,7 +25,7 @@ func (i *Invitation) Insert() error {
 // find one
 func (i *Invitation) FindOne() (Invitation, error) {
 	var result Invitation
-	coll := database.Client.Database("XcloudTest").Collection("invitation")
+	coll := database.Database.Collection("invitation")
 
 	err := coll.FindOne(context.TODO(), i).Decode(&result)
 	if err != nil {

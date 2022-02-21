@@ -12,16 +12,16 @@ import (
 )
 
 var (
-	Client *mongo.Client
-	ctx    context.Context
+	Database *mongo.Database
+	Client   *mongo.Client
+	ctx      context.Context
 )
 
 func InitEngine() {
-	Client = initDatabase()
-	return
+	Database = initDatabase()
 }
 
-func initDatabase() *mongo.Client {
+func initDatabase() *mongo.Database {
 	c := config.Config
 
 	mongoUrl := fmt.Sprintf("mongodb://%v:%v@%v:%v/%v", c.Data.Mongo.User, c.Data.Mongo.Password, c.Data.Mongo.Ip, c.Data.Mongo.Port, c.Data.Mongo.DatabaseName)
@@ -38,7 +38,9 @@ func initDatabase() *mongo.Client {
 		log.Fatal(err)
 	}
 
-	return client
+	database := client.Database(c.Data.Mongo.DatabaseName)
+
+	return database
 }
 
 func Close() {

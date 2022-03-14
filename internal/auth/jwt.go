@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"fmt"
-	"log"
 	"time"
 
 	typesClient "github.com/byteso/Xcloud/api/cloud-client/v1/types"
@@ -20,7 +19,7 @@ var (
 type CustomClaimsClient struct {
 	*jwt.StandardClaims
 	TokenType string
-	typesClient.RequestLogin
+	typesClient.ClientJwt
 }
 
 type CustomClaimsServer struct {
@@ -47,20 +46,20 @@ func CreateToken(content interface{}, types string) (string, error) {
 	case "client":
 		t.Claims = &CustomClaimsClient{
 			&jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Minute * 2).Unix(),
+				ExpiresAt: time.Now().Add(time.Minute * 20).Unix(),
 			},
 			"level1",
-			func() typesClient.RequestLogin {
-				if v, ok := content.(typesClient.RequestLogin); ok {
+			func() typesClient.ClientJwt {
+				if v, ok := content.(typesClient.ClientJwt); ok {
 					return v
 				}
-				return typesClient.RequestLogin{}
+				return typesClient.ClientJwt{}
 			}(),
 		}
 	case "server":
 		t.Claims = &CustomClaimsServer{
 			&jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Minute * 2).Unix(),
+				ExpiresAt: time.Now().Add(time.Minute * 20).Unix(),
 			},
 			"level1",
 			func() typesServer.RequestLogin {
@@ -75,35 +74,35 @@ func CreateToken(content interface{}, types string) (string, error) {
 	return t.SignedString(signKey)
 }
 
-func ParseToken(tokenString string, types string) bool {
+func ParseToken(tokenString string, types string) (interface{}, bool) {
 	switch types {
 	case "client":
 		token, err := jwt.ParseWithClaims(tokenString, &CustomClaimsClient{}, func(token *jwt.Token) (interface{}, error) {
 			return verifyKey, nil
 		})
 		if err != nil {
-			log.Fatal(err)
+			return nil, false
 		}
 
 		if claims, ok := token.Claims.(*CustomClaimsClient); ok && token.Valid {
 			fmt.Println(claims)
-			return true
+			return claims.ClientJwt, true
 		}
 	case "server":
 		token, err := jwt.ParseWithClaims(tokenString, &CustomClaimsServer{}, func(token *jwt.Token) (interface{}, error) {
 			return verifyKey, nil
 		})
 		if err != nil {
-			log.Fatal(err)
+			return nil, false
 		}
 
 		fmt.Println(token)
 
 		if claims, ok := token.Claims.(*CustomClaimsServer); ok && token.Valid {
 			fmt.Println(claims.LoginCode)
-			return true
+			return claims.RequestLogin, true
 		}
 	}
 
-	return false
+	return nil, false
 }

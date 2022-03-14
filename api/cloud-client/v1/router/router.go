@@ -11,13 +11,26 @@ func Router() {
 
 	v1 := r.Group("/v1")
 	{
-		v1.POST("/:path", api.LoginHandle)
+		v1.POST("/:path", api.LoginEndpoint)
 	}
 
 	auth := r.Group("/v1/auth", middleware.AuthJwt())
 	{
-		auth.GET("/source/:path", api.SourceHandle)
-		auth.GET("/info/:path", api.UserInfoHandle)
+		// source
+		auth.GET("/source/:path", api.SourceEndpoint)
+		auth.POST("/source/:path", api.SourceEndpoint)
+		auth.DELETE("/source/:path", api.SourceEndpoint)
+
+		// user info
+		auth.GET("/info/:path", api.UserInfoEndpoint)
+		auth.POST("/info/:path", api.UserInfoEndpoint)
+
+		// storage info
+		auth.GET("storage/:path", api.StorageEndpoint)
+
+		// file info
+		auth.GET("/fileInfo/:path", api.FileInfoHandle)
 	}
-	r.Run()
+
+	r.Run("localhost:8080")
 }

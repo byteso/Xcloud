@@ -2,9 +2,7 @@ package types
 
 // request source
 type RequestSource struct {
-	Token  string   `json:"token" binding:"required"`
-	Type   string   `json:"type" binding:"required"`
-	Target []string `json:"target" binding:"required"`
+	FolderName string `json:"folderName" binding:"required"`
 }
 
 // response source

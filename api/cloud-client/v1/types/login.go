@@ -6,6 +6,11 @@ type RequestLogin struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type ClientJwt struct {
+	Account    string `json:"account" binding:"required"`
+	BucketName string `json:"bucketName"`
+}
+
 type RequestInvitation struct {
 	InvitationCode string `json:"invitationCode" binding:"required"`
 }

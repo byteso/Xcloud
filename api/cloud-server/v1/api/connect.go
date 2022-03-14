@@ -8,17 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ConnectGetHandle(c *gin.Context) {
+func ConnectGetEndpoint(c *gin.Context) {
 	p := c.Param("path")
 	fmt.Println(p)
 
 	switch p {
-	case "connect":
-		connect(c)
+	case "connectStatus":
+		connectStatus(c)
 	}
 }
 
-func connect(c *gin.Context) {
+func connectStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"data": config.Config.CloudServer.Platform,

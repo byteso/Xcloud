@@ -8,17 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func LoginEndpoint(c *gin.Context) {
-	path := c.Param("path")
+func UserInfoEndpoint(c *gin.Context) {
+	p := c.Param("path")
 
-	switch path {
-	case "login":
-		login(c)
+	switch p {
+	case "userInfo":
+		userInfo(c)
 	}
 }
 
-func login(c *gin.Context) {
-	var request types.RequestLogin
+func userInfo(c *gin.Context) {
+	var request types.RequestUserInfo
 
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -28,11 +28,11 @@ func login(c *gin.Context) {
 		return
 	}
 
-	response, err := service.Login(request)
+	response, err := service.GetUserInfo(request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": http.StatusBadRequest,
-			"msg":  http.StatusText(http.StatusBadRequest),
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code": http.StatusInternalServerError,
+			"msg":  http.StatusText(http.StatusInternalServerError),
 		})
 		return
 	}
@@ -42,5 +42,4 @@ func login(c *gin.Context) {
 		"data": response,
 		"msg":  http.StatusText(http.StatusOK),
 	})
-
 }
